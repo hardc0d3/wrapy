@@ -78,6 +78,7 @@ class Wrapy(object):
                         kwargs[ self._pre_result_key ] = pre ( *args, **kwargs )
                     else:
                         pre ( *args, **kwargs )
+                       
                     if self._ori_result_key in kwargs:
                         del okwargs[self._ori_result_key]
                         kwargs[ self._ori_result_key ] = ori (*args, **okwargs )
@@ -98,6 +99,7 @@ class Wrapy(object):
                         kwargs[ self._pre_result_key ] = pre ( **kwargs )
                     else:
                         pre ( *args, **kwargs )
+
                     if self._ori_result_key in kwargs:
                         del okwargs[self._ori_result_key]
                         kwargs[  self._ori_result_key ] = ori (**okwargs )
