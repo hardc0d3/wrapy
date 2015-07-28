@@ -2,7 +2,8 @@
 class Wrapy(object):
 
     def __init__( self, pre_result_key = 'wrapy_pre_result',
-                  ori_result_key = 'wrapy_ori_result' ):
+                  ori_result_key = 'wrapy_ori_result',
+                ):
 
         self._pre_result_key = pre_result_key
         self._ori_result_key = ori_result_key
@@ -64,6 +65,51 @@ class Wrapy(object):
                     ori( )
                     return post( )
         return f
+# ----------------------------------------------------------------------------
+
+    def prepost( self, ori, pre, post ):
+        """ injects function pre before ori(in(al) function adn then post """
+        def f( *args, **kwargs ):
+            if args:
+                if kwargs:
+                    okwargs = dict(kwargs)
+                    if self._pre_result_key in kwargs:
+                        del okwargs[self._pre_result_key]
+                        kwargs[ self._pre_result_key ] = pre ( *args, **kwargs )
+                    else:
+                        pre ( *args, **kwargs )
+                    if self._ori_result_key in kwargs:
+                        del okwargs[self._ori_result_key]
+                        kwargs[ self._ori_result_key ] = ori (*args, **okwargs )
+                    else:
+                        ori( *args, **okwargs )
+                    return post( *args, **kwargs )
+#--
+                else:
+                    pre( *args)
+                    ori( *args )
+                    return post ( *args)
+#-- 
+            else:
+                if kwargs:
+                    okwargs = dict(kwargs)
+                    if self._pre_result_key in kwargs:
+                        del okwargs[self._pre_result_key]
+                        kwargs[ self._pre_result_key ] = pre ( **kwargs )
+                    else:
+                        pre ( *args, **kwargs )
+                    if self._ori_result_key in kwargs:
+                        del okwargs[self._ori_result_key]
+                        kwargs[  self._ori_result_key ] = ori (**okwargs )
+                    else:
+                        ori ( **okwargs )
+                    return post( **kwargs )
+                else:
+                    pre( )
+                    ori( )
+                    return post( )
+        return f
+
 
 
 
